@@ -35,3 +35,6 @@ set statusline+=[ENC=%{&fileencoding}]
 set statusline+=[LOW=%l/%L]
 " ステータスラインを常に表示(0:表示しない、1:2つ以上ウィンドウがある時だけ表示)
 set laststatus=2
+
+" yaml setting
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
