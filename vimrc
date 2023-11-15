@@ -1,5 +1,5 @@
 set fenc=utf-8
-colorscheme zellner
+colorscheme torte
 
 "ターミナルで256色表示を使う
 set t_Co=256
