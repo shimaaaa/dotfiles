@@ -37,41 +37,23 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
 zinit light zsh-users/zsh-completions
 zinit light chrissicool/zsh-256color
-zinit ice pick"async.zsh" src"pure.zsh"
-zinit light sindresorhus/pure
 
-
-# peco ====================================
-function peco-history-selection() {
-    BUFFER=`history -n -r 1 | awk '!a[$0]++' | peco`
-    CURSOR=$#BUFFER
-    zle reset-prompt
+# skim
+function skim-hist() {
+	BUFFER=$(history -n -r 1 | sk --query "$LBUFFER" --reverse)
+	CURSOR=$#BUFFER
+	zle reset-prompt
 }
+zle -N skim-hist
+bindkey '^r' skim-hist
 
-zle -N peco-history-selection
-bindkey '^R' peco-history-selection
-
-function peco-src () {
-  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd ${selected_dir}"
-    zle accept-line
-  fi
-  zle clear-screen
+function skim-src() {
+	local selected_dir=$(ghq list -p | sk --query "$LBUFFER" --reverse)
+	BUFFER="cd ${selected_dir}"
+	zle accept-line
 }
-zle -N peco-src
-bindkey '^]' peco-src
-
-function peco-src-app () {
-  local selected_dir=$(ghq list -p | peco --query "$LBUFFER")
-  if [ -n "$selected_dir" ]; then
-    BUFFER="github ${selected_dir}"
-    zle accept-line
-  fi
-  zle clear-screen
-}
-zle -N peco-src-app
-bindkey '^\' peco-src-app
+zle -N skim-src
+bindkey '^]' skim-src
 
 # Pyenv ====================================
 eval "$(pyenv init -)"
@@ -81,3 +63,17 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 # poetry
 export PATH=/Users/shima/.local/bin:$PATH
+
+# kubectl
+autoload -Uz compinit
+compinit
+source <(kubectl completion zsh)
+
+# starship
+eval "$(starship init zsh)"
+
+
+# starship
+eval "$(starship init zsh)"
+# starship
+eval "$(starship init zsh)"
